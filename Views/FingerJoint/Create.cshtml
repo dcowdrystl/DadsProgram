@@ -1,0 +1,44 @@
+﻿@model FingerJoint
+
+<h2>Create Finger Joint Progress</h2>
+
+<form method="post">
+    <div asp-validation-summary="All"></div>
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Finger"></label>
+        <input asp-for="Finger" class="form-control" />
+        <span asp-validation-for="Finger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Extension"></label>
+        <input asp-for="Extension" class="form-control" />
+        <span asp-validation-for="Extension"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Flexion"></label>
+        <input asp-for="Flexion" class="form-control" />
+        <span asp-validation-for="Flexion"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ActiveValue"></label>
+        <input asp-for="ActiveValue" class="form-control" />
+        <span asp-validation-for="ActiveValue"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PassiveValue"></label>
+        <input asp-for="PassiveValue" class="form-control" />
+        <span asp-validation-for="PassiveValue"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description"></span>
+    </div>
+
+    <input type="submit" class="btn btn-outline-primary" value="Submit" />
+    </form>
