@@ -3,6 +3,7 @@ using DadsProgram.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DadsProgram.Controllers
 {
@@ -53,6 +54,16 @@ namespace DadsProgram.Controllers
 
             return Json(new { extensionData, flexionData, fingerData });
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int fid)
+        {
+            FingerJoint fingerJoint = _context.FingerJoints.Find(fid);
+            _context.FingerJoints.Remove(fingerJoint);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
 
     }
 }
