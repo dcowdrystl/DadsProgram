@@ -10,6 +10,7 @@
 
 
 <table class="table">
+
     <thead>
         <tr>
             <th>ID</th>
@@ -28,7 +29,7 @@
         {
             <tr>
                 <td>@item.ID</td>
-                <td>@item.Name</td>
+                <td><a asp-action="GetDataForSelectedName">@item.Name</a>@item.Name</td>
                 <td>@item.Date</td>
                 <td>@item.Finger</td>
                 <td>@item.Extension</td>
@@ -60,7 +61,7 @@
             var chart = new Chart(ctx, {
                 type: "line",
                 data: {
-                    labels: data.fingerData,
+                    labels: data.fingerDataWithDates,
                     datasets: [
                         {
                             label: "Extension",

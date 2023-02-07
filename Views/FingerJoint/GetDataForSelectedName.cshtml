@@ -1,0 +1,21 @@
+﻿@model IEnumerable<DadsProgram.Models.FingerJoint>
+
+<h2>Finger Joint Data</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Extension</th>
+            <th>Flexion</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+                <tr>
+                    <td>@item.Extension</td>
+                    <td>@item.Flexion</td>
+                </tr>
+        }
+    </tbody>
+</table>

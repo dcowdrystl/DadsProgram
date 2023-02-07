@@ -42,11 +42,31 @@ namespace DadsProgram.Controllers
             return View(fingerJoint);
         }
 
+        /*       public JsonResult GetData()
+               {
+                   var extensionData = new List<int>();
+                   var flexionData = new List<int>();
+                   var fingerData = new List<string>();
+                   var dates = new List<string>();
+
+                   // Retrieve data from database
+                   var fingerJoints = _context.FingerJoints.ToList();
+                   foreach (var fingerJoint in fingerJoints)
+                   {
+                       extensionData.Add(fingerJoint.Extension);
+                       flexionData.Add(fingerJoint.Flexion);
+                       fingerData.Add(fingerJoint.Finger);
+                       dates.Add(fingerJoint.Date.ToString("yyyy-MM-dd")); // Add the corresponding date for each finger joint
+                   }
+
+                   return Json(new { extensionData, flexionData, fingerData, dates });
+               }*/
         public JsonResult GetData()
         {
             var extensionData = new List<int>();
             var flexionData = new List<int>();
             var fingerData = new List<string>();
+            var fingerDataWithDates = new List<string>();
 
             // Retrieve data from database
             var fingerJoints = _context.FingerJoints.ToList();
@@ -55,9 +75,10 @@ namespace DadsProgram.Controllers
                 extensionData.Add(fingerJoint.Extension);
                 flexionData.Add(fingerJoint.Flexion);
                 fingerData.Add(fingerJoint.Finger);
+                fingerDataWithDates.Add($"{fingerJoint.Finger} ({fingerJoint.Date.ToShortDateString()})");
             }
 
-            return Json(new { extensionData, flexionData, fingerData });
+            return Json(new { extensionData, flexionData, fingerDataWithDates });
         }
 
         /*
@@ -74,14 +95,14 @@ namespace DadsProgram.Controllers
 
             // Store the names in the ViewData dictionary
             // ViewData["names"] = new SelectList(names);
-
+            ViewData["names"] = new SelectList((System.Collections.IEnumerable)names, selectedName);
             // Store the selected name in the ViewData dictionary
             ViewData["selectedName"] = selectedName;
 
             // Get the data related to the selected name
             var data = GetDataForSelectedName(selectedName);
 
-            return View(data);
+            return View("SortByName", data);
         }
         public async Task<IActionResult> GetNames()
         {
@@ -99,7 +120,8 @@ namespace DadsProgram.Controllers
             var flexionData = data.Select(f => f.Flexion).ToList();
 
             //Return the data as a JSON object
-            return Json(new { extensionData, flexionData });
+            // return Json(new { extensionData, flexionData });
+            return View("Index", data);
         }
 
         [HttpGet]

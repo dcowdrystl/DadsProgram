@@ -14,7 +14,11 @@ namespace DadsProgram.Models
         public int PassiveValue { get; set; }
         public string Finger { get; set; }
         public DateTime Date { get; set; }
-        public FingerJoint() { }
+        public FingerJoint()
+        {
+            if (Date == DateTime.MinValue)
+                Date = DateTime.Now;
+        }
 
 
     }
