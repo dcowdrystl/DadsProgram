@@ -1,21 +1,87 @@
-﻿@model IEnumerable<DadsProgram.Models.FingerJoint>
+﻿@*@model IEnumerable<FingerJoint>*@
+@model List<FingerJoint>
 
-<h2>Finger Joint Data</h2>
-
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+</head>
 <table class="table">
     <thead>
         <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Date</th>
+            <th>Finger</th>
             <th>Extension</th>
             <th>Flexion</th>
+            <th>Active Value</th>
+            <th>Passive Value</th>
+            <th>Description</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-                <tr>
-                    <td>@item.Extension</td>
-                    <td>@item.Flexion</td>
-                </tr>
+            <tr>
+                <td>@item.ID</td>
+                <td><a onclick="GetDataForSelectedName('@item.Name')">@item.Name</a></td>
+                <td>@item.Date.ToString("yyyy-MM-dd")</td>
+                <td>@item.Finger</td>
+                <td>@item.Extension</td>
+                <td>@item.Flexion</td>
+                <td>@item.ActiveValue</td>
+                <td>@item.PassiveValue</td>
+                <td>@item.Description</td>
+                <td><a asp-controller="FingerJoint" asp-action="Delete" asp-route-fid="@item.ID" class="btn btn-info text-dark"><b>Delete</b></a></td>
+            </tr>
         }
     </tbody>
 </table>
+<a asp-action="Create">Create New</a>
+
+<canvas id="myChart"></canvas>
+
+<script>
+    $(document).ready(function () {
+        $.getJSON("/FingerJoint/GetDataForSelectedNameJson", function (data) {
+            console.log("data:", data);
+            var extensionData = data.extensionData;
+            var flexionData = data.flexionData;
+            var fingerDataWithDates = data.fingerDataWithDates;
+
+             console.log("extensionData:", extensionData);
+        console.log("flexionData:", flexionData);
+        console.log("fingerDataWithDates:", fingerDataWithDates);
+            var ctx = document.getElementById("myChart").getContext("2d");
+            var myChart = new Chart(ctx, {
+                type: "line",
+                data: {
+                    labels: fingerDataWithDates,
+                    datasets: [{
+                        label: "Extension",
+                        data: extensionData,
+                        backgroundColor: "rgba(255, 99, 132, 0.2)",
+                        borderColor: "rgba(255, 99, 132, 1)",
+                        borderWidth: 1
+                    },
+                    {
+                        label: "Flexion",
+                        data: flexionData,
+                        backgroundColor: "rgba(54, 162, 235, 0.2)",
+                        borderColor: "rgba(54, 162, 235, 1)",
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+        });
+    });
+</script>

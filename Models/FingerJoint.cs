@@ -23,3 +23,5 @@ namespace DadsProgram.Models
 
     }
 }
+
+// change extension and flexion to have active and passive values
