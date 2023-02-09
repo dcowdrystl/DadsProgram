@@ -277,6 +277,33 @@ namespace DadsProgram.Controllers
             return View(fingerJoints);
 
         }
+        /*        [HttpGet]
+                public IActionResult GetDataForSelectedNameJson()
+                {
+                    var selectedName = HttpContext.Session.GetString("selectedName");
+
+                    var extensionData = new List<int>();
+                    var flexionData = new List<int>();
+                    var fingerDataWithDates = new List<string>();
+
+                    // Retrieve data from database
+                    var fingerJoints = _context.FingerJoints.Where(fj => fj.Name == selectedName).ToList();
+                    foreach (var fingerJoint in fingerJoints)
+                    {
+                        extensionData.Add(fingerJoint.Extension);
+                        flexionData.Add(fingerJoint.Flexion);
+                        fingerDataWithDates.Add($"{fingerJoint.Finger} ({fingerJoint.Date.ToShortDateString()})");
+                    }
+
+                    var result = new
+                    {
+                        ExtensionData = extensionData,
+                        FlexionData = flexionData,
+                        FingerDataWithDates = fingerDataWithDates
+                    };
+
+                    return Json(result);
+                }*/
         [HttpGet]
         public IActionResult GetDataForSelectedNameJson()
         {
