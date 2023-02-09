@@ -305,7 +305,7 @@ namespace DadsProgram.Controllers
                     return Json(result);
                 }*/
         [HttpGet]
-        public IActionResult GetDataForSelectedNameJson()
+        public IActionResult GetDataForSelectedNameJson(string selectedFinger)
         {
             var selectedName = HttpContext.Session.GetString("selectedName");
 
@@ -314,7 +314,7 @@ namespace DadsProgram.Controllers
             var fingerDataWithDates = new List<string>();
 
             // Retrieve data from database
-            var fingerJoints = _context.FingerJoints.Where(fj => fj.Name == selectedName).ToList();
+            var fingerJoints = _context.FingerJoints.Where(fj => fj.Name == selectedName && fj.Finger == selectedFinger).ToList();
             foreach (var fingerJoint in fingerJoints)
             {
                 extensionData.Add(fingerJoint.Extension);
