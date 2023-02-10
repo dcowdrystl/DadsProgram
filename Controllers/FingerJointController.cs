@@ -82,6 +82,7 @@ namespace DadsProgram.Controllers
                 fingerDataWithDates.Add($"{fingerJoint.Finger} ({fingerJoint.Date.ToShortDateString()})");
             }
             HttpContext.Session.SetString("selectedName", selectedName);
+            string nameFilter = HttpContext.Session.GetString("selectedName");
 
             return View(fingerJoints);
 

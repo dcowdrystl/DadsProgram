@@ -5,7 +5,27 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 </head>
 <h2>Finger Joint Progress</h2>
-
+<form>
+    <div class="form-group">
+        <label for="nameFilter">Name:</label>
+        <input type="text" class="form-control" id="nameFilter" name="nameFilter">
+    </div>
+@*    <div class="form-group">
+        <label for="fingerFilter">Finger:</label>
+        <input type="text" class="form-control" id="fingerFilter" name="fingerFilter">
+    </div>*@
+    <div class="form-row align-items-center">
+        <div class="col-auto my-1">
+            <label class="mr-sm-2" for="inlineFormCustomSelect">Preference</label>
+            <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
+                <option selected>Choose...</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+        </div>
+    <button type="button" class="btn btn-primary" onclick="filterData()">Filter</button>
+</form>
 
 
 
@@ -104,3 +124,52 @@
         }
     });
     </script>
+
+<script>
+    function filterData() {
+        // Get the values from the form inputs
+
+        var nameFilter = $("#nameFilter").val();
+        var fingerFilter = $("#fingerFilter").val();
+
+        $.getJSON("/FingerJoint/GetDataForSelectedNameJson", { nameFilter: nameFilter, fingerFilter: fingerFilter }, function (data) {
+            console.log("data:", data);
+            var extensionData = data.extensionData;
+            var flexionData = data.flexionData;
+            var fingerDataWithDates = data.fingerDataWithDates;
+            console.log("extensionData:", extensionData);
+            console.log("flexionData:", flexionData);
+            console.log("fingerDataWithDates:", fingerDataWithDates);
+            var ctx = document.getElementById("myChart").getContext("2d");
+            var myChart = new Chart(ctx, {
+                type: "line",
+                data: {
+                    labels: fingerDataWithDates,
+                    datasets: [{
+                        label: "Extension",
+                        data: extensionData,
+                        backgroundColor: "rgba(255, 99, 132, 0.2)",
+                        borderColor: "rgba(255, 99, 132, 1)",
+                        borderWidth: 1
+                    },
+                    {
+                        label: "Flexion",
+                        data: flexionData,
+                        backgroundColor: "rgba(54, 162, 235, 0.2)",
+                        borderColor: "rgba(54, 162, 235, 1)",
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+        });
+    }
+</script>
