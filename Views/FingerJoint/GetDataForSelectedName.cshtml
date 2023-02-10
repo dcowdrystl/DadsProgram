@@ -1,10 +1,23 @@
-﻿@*@model IEnumerable<FingerJoint>*@
-@model List<FingerJoint>
+﻿@model List<FingerJoint>
 
 <head>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 </head>
+
+<!-- Add a form for filtering the data -->
+<form>
+    <div class="form-group">
+        <label for="nameFilter">Name:</label>
+        <input type="text" class="form-control" id="nameFilter" name="nameFilter">
+    </div>
+    <div class="form-group">
+        <label for="fingerFilter">Finger:</label>
+        <input type="text" class="form-control" id="fingerFilter" name="fingerFilter">
+    </div>
+    <button type="button" class="btn btn-primary" onclick="filterData()">Filter</button>
+</form>
+
 <table class="table">
     <thead>
         <tr>
@@ -42,8 +55,12 @@
 <canvas id="myChart"></canvas>
 
 <script>
-    $(document).ready(function () {
-        $.getJSON("/FingerJoint/GetDataForSelectedNameJson", function (data) {
+    function filterData() {
+        // Get the values from the form inputs
+        var nameFilter = $("#nameFilter").val();
+        var fingerFilter = $("#fingerFilter").val();
+
+        $.getJSON("/FingerJoint/GetDataForSelectedNameJson", { nameFilter: nameFilter, fingerFilter: fingerFilter }, function (data) {
             console.log("data:", data);
             var extensionData = data.extensionData;
             var flexionData = data.flexionData;
@@ -82,5 +99,5 @@
                 }
             });
         });
-    });
+    }
 </script>
