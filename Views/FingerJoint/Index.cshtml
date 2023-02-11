@@ -1,6 +1,14 @@
 ﻿
 @model List<string>
 
+    <form asp-controller="FingerJoint" asp-action="GetDataForSelectedName">
+    <div class="form-group">
+        <label for="selectedName">Search for a patient:</label>
+        <input type="text" id="selectedName" name="selectedName" class="form-control" />
+    </div>
+    <input type="submit" value="Search" class="btn btn-info text-dark" />
+</form>
+
 <table class="table">
     <thead>
         <tr>

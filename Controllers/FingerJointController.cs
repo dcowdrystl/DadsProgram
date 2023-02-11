@@ -85,6 +85,13 @@ namespace DadsProgram.Controllers
 
             // Retrieve data from database
             var fingerJoints = _context.FingerJoints.Where(fj => fj.Name == selectedName).ToList();
+
+            // Add search functionality for selectedName
+            if (!string.IsNullOrEmpty(selectedName))
+            {
+                fingerJoints = fingerJoints.Where(fj => fj.Name.Contains(selectedName)).ToList();
+            }
+
             var fingerNames = fingerJoints.Select(fj => fj.Finger).Distinct().ToList();
             ViewData["fingerNames"] = fingerNames;
             foreach (var fingerJoint in fingerJoints)
@@ -98,7 +105,6 @@ namespace DadsProgram.Controllers
             string nameFilter = HttpContext.Session.GetString("selectedName");
 
             return View(fingerJoints);
-
         }
 
         [HttpGet]
