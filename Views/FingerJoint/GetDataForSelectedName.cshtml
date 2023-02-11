@@ -48,10 +48,11 @@
                 <td><a onclick="GetDataForSelectedName('@item.Name')">@item.Name</a></td>
                 <td>@item.Date.ToString("yyyy-MM-dd")</td>
                 <td>@item.Finger</td>
-                <td>@item.Extension</td>
-                <td>@item.Flexion</td>
-                <td>@item.ActiveValue</td>
-                <td>@item.PassiveValue</td>
+                <td>@item.ActiveExtension</td>
+                <td>@item.PassiveExtension</td>
+                <td>@item.ActiveFlexion</td>
+                <td>@item.PassiveFlexion</td>
+
                 <td>@item.Description</td>
                 <td><a asp-controller="FingerJoint" asp-action="Delete" asp-route-fid="@item.ID" class="btn btn-info text-dark"><b>Delete</b></a></td>
             </tr>

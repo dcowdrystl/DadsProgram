@@ -49,7 +49,7 @@ namespace DadsProgram.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Name,Extension,Flexion,ActiveValue,PassiveValue,Finger,Date,Description")] FingerJoint fingerJoint)
+        public IActionResult Create([Bind("Name,ActiveExtension,PassiveExtension,ActiveFlexion,PassiveFlexion,Finger,Date,Description")] FingerJoint fingerJoint)
         {
             if (ModelState.IsValid)
             {
@@ -71,8 +71,8 @@ namespace DadsProgram.Controllers
             var fingerJoints = _context.FingerJoints.ToList();
             foreach (var fingerJoint in fingerJoints)
             {
-                extensionData.Add(fingerJoint.Extension);
-                flexionData.Add(fingerJoint.Flexion);
+                extensionData.Add(fingerJoint.PassiveExtension);
+                flexionData.Add(fingerJoint.ActiveFlexion);
                 fingerData.Add(fingerJoint.Finger);
                 fingerDataWithDates.Add($"{fingerJoint.Finger} ({fingerJoint.Date.ToShortDateString()})");
             }
@@ -95,8 +95,8 @@ namespace DadsProgram.Controllers
             ViewData["fingerNames"] = fingerNames;
             foreach (var fingerJoint in fingerJoints)
             {
-                extensionData.Add(fingerJoint.Extension);
-                flexionData.Add(fingerJoint.Flexion);
+                extensionData.Add(fingerJoint.PassiveExtension);
+                flexionData.Add(fingerJoint.ActiveFlexion);
                 fingerDataWithDates.Add($"{fingerJoint.Finger} ({fingerJoint.Date.ToShortDateString()})");
             }
             HttpContext.Session.SetString("selectedName", selectedName);
@@ -115,8 +115,8 @@ namespace DadsProgram.Controllers
                 .OrderBy(fj => fj.Date)
                 .ToList();
 
-            var extensionData = data.Select(fj => fj.Extension).ToList();
-            var flexionData = data.Select(fj => fj.Flexion).ToList();
+            var extensionData = data.Select(fj => fj.PassiveExtension).ToList();
+            var flexionData = data.Select(fj => fj.ActiveFlexion).ToList();
             var fingerDataWithDates = data.Select(fj => fj.Date.ToString("yyyy-MM-dd")).ToList();
 
             return Json(new { extensionData, flexionData, fingerDataWithDates });

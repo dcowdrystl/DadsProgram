@@ -18,6 +18,7 @@
         <label for="Finger">Finger</label>
         <select class="form-control" id="Finger" name="Finger">
             <option selected>Choose...</option>
+            <option value="Thumb">Thumb</option>
             <option value="Index">Index</option>
             <option value="Middle">Middle</option>
             <option value="Ring">Ring</option>
@@ -25,24 +26,24 @@
         </select>
     </div>
     <div class="form-group">
-        <label asp-for="Extension"></label>
-        <input asp-for="Extension" class="form-control" />
-        <span asp-validation-for="Extension"></span>
+        <label asp-for="ActiveExtension"></label>
+        <input asp-for="ActiveExtension" class="form-control" />
+        <span asp-validation-for="ActiveExtension"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Flexion"></label>
-        <input asp-for="Flexion" class="form-control" />
-        <span asp-validation-for="Flexion"></span>
+        <label asp-for="PassiveExtension"></label>
+        <input asp-for="PassiveExtension" class="form-control" />
+        <span asp-validation-for="PassiveExtension"></span>
     </div>
     <div class="form-group">
-        <label asp-for="ActiveValue"></label>
-        <input asp-for="ActiveValue" class="form-control" />
-        <span asp-validation-for="ActiveValue"></span>
+        <label asp-for="ActiveFlexion"></label>
+        <input asp-for="ActiveFlexion" class="form-control" />
+        <span asp-validation-for="ActiveFlexion"></span>
     </div>
     <div class="form-group">
-        <label asp-for="PassiveValue"></label>
-        <input asp-for="PassiveValue" class="form-control" />
-        <span asp-validation-for="PassiveValue"></span>
+        <label asp-for="PassiveFlexion"></label>
+        <input asp-for="PassiveFlexion" class="form-control" />
+        <span asp-validation-for="PassiveFlexion"></span>
     </div>
     <div class="form-group">
         <label asp-for="Description"></label>

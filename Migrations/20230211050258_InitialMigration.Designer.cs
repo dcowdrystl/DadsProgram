@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DadsProgram.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230205040047_InitialMigration")]
+    [Migration("20230211050258_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,7 +28,10 @@ namespace DadsProgram.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ActiveValue")
+                    b.Property<int>("ActiveExtension")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ActiveFlexion")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Date")
@@ -37,19 +40,16 @@ namespace DadsProgram.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Extension")
-                        .HasColumnType("int");
-
                     b.Property<string>("Finger")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Flexion")
-                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PassiveValue")
+                    b.Property<int>("PassiveExtension")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PassiveFlexion")
                         .HasColumnType("int");
 
                     b.HasKey("ID");

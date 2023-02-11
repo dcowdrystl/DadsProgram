@@ -8,10 +8,11 @@ namespace DadsProgram.Models
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public int Extension { get; set; }
-        public int Flexion { get; set; }
-        public int ActiveValue { get; set; }
-        public int PassiveValue { get; set; }
+        public int ActiveExtension { get; set; }
+        public int PassiveExtension { get; set; }
+        public int ActiveFlexion { get; set; }
+        public int PassiveFlexion { get; set; }
+
         public string Finger { get; set; }
         public DateTime Date { get; set; }
         public FingerJoint()
