@@ -1,4 +1,4 @@
-﻿
+﻿@*
 @model List<FingerJoint>
 <head>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -152,4 +152,23 @@
             });
         });
     }
-</script>
+</script>*@
+@model List<string>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Patient Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item</td>
+                <td><a asp-controller="FingerJoint" asp-action="GetDataForSelectedName" asp-route-selectedName="@item" class="btn btn-info text-dark">See More</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

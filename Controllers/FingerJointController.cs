@@ -2,7 +2,6 @@
 using DadsProgram.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,12 +17,14 @@ namespace DadsProgram.Controllers
         }
         public IActionResult Index()
         {
-            var allData = _context.FingerJoints.ToList();
-            var names = allData.Select(x => x.Name).Distinct().ToList();
-            ViewData["names"] = new SelectList(names);
-            var fingers = allData.Select(x => x.Finger).Distinct().ToList();
-            ViewData["fingers"] = new SelectList(fingers);
-            return View(allData);
+            /*            var allData = _context.FingerJoints.ToList();
+                        var names = allData.Select(x => x.Name).Distinct().ToList();
+                        ViewData["names"] = new SelectList(names);
+                        var fingers = allData.Select(x => x.Finger).Distinct().ToList();
+                        ViewData["fingers"] = new SelectList(fingers);
+                        return View(allData);*/
+            var names = _context.FingerJoints.Select(fj => fj.Name).Distinct().ToList();
+            return View(names);
         }
 
         public IActionResult Create()

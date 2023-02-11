@@ -25,3 +25,4 @@ namespace DadsProgram.Models
 }
 
 // change extension and flexion to have active and passive values
+//passive extension and active flexion for graph data points
