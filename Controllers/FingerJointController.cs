@@ -23,8 +23,23 @@ namespace DadsProgram.Controllers
                         var fingers = allData.Select(x => x.Finger).Distinct().ToList();
                         ViewData["fingers"] = new SelectList(fingers);
                         return View(allData);*/
-            var names = _context.FingerJoints.Select(fj => fj.Name).Distinct().ToList();
+            var names = _context.FingerJoints
+                    .Select(fj => fj.Name)
+                    .Distinct()
+                    .AsEnumerable()
+                    .OrderBy(name => GetLastName(name))
+                    .ToList();
             return View(names);
+        }
+        public static string GetLastName(string name)
+        {
+            int index = name.LastIndexOf(" ");
+            if (index != -1)
+            {
+                return name.Substring(index + 1);
+            }
+
+            return name;
         }
 
         public IActionResult Create()
@@ -76,6 +91,8 @@ namespace DadsProgram.Controllers
 
             // Retrieve data from database
             var fingerJoints = _context.FingerJoints.Where(fj => fj.Name == selectedName).ToList();
+            var fingerNames = fingerJoints.Select(fj => fj.Finger).Distinct().ToList();
+            ViewData["fingerNames"] = fingerNames;
             foreach (var fingerJoint in fingerJoints)
             {
                 extensionData.Add(fingerJoint.Extension);
@@ -83,6 +100,7 @@ namespace DadsProgram.Controllers
                 fingerDataWithDates.Add($"{fingerJoint.Finger} ({fingerJoint.Date.ToShortDateString()})");
             }
             HttpContext.Session.SetString("selectedName", selectedName);
+            ViewData["selectedName"] = selectedName;
             string nameFilter = HttpContext.Session.GetString("selectedName");
 
             return View(fingerJoints);
