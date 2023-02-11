@@ -17,12 +17,6 @@ namespace DadsProgram.Controllers
         }
         public IActionResult Index()
         {
-            /*            var allData = _context.FingerJoints.ToList();
-                        var names = allData.Select(x => x.Name).Distinct().ToList();
-                        ViewData["names"] = new SelectList(names);
-                        var fingers = allData.Select(x => x.Finger).Distinct().ToList();
-                        ViewData["fingers"] = new SelectList(fingers);
-                        return View(allData);*/
             var names = _context.FingerJoints
                     .Select(fj => fj.Name)
                     .Distinct()
