@@ -84,7 +84,7 @@ namespace DadsProgram.Controllers
             var fingerDataWithDates = new List<string>();
 
             // Retrieve data from database
-            var fingerJoints = _context.FingerJoints.Where(fj => fj.Name == selectedName).ToList();
+            var fingerJoints = _context.FingerJoints.Where(fj => fj.Name == selectedName).OrderBy(fj => fj.Date).ThenBy(fj => fj.Finger).ToList();
 
             // Add search functionality for selectedName
             if (!string.IsNullOrEmpty(selectedName))

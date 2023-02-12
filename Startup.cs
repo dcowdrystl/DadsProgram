@@ -28,6 +28,7 @@ namespace DadsProgram
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddDistributedMemoryCache();
             services.AddSession();
         }
 
@@ -53,6 +54,8 @@ namespace DadsProgram
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {
