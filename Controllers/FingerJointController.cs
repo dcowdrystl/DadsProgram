@@ -107,20 +107,39 @@ namespace DadsProgram.Controllers
             return View(fingerJoints);
         }
 
+        /*  [HttpGet]
+          public IActionResult GetDataForSelectedNameJson(string nameFilter, string fingerFilter)
+          {
+              var data = _context.FingerJoints
+                  .Where(fj => (string.IsNullOrEmpty(nameFilter) || fj.Name.Contains(nameFilter)) && (string.IsNullOrEmpty(fingerFilter) || fj.Finger == fingerFilter))
+                  .OrderBy(fj => fj.Date)
+                  .ToList();
+
+              var pextensionData = data.Select(fj => fj.PassiveExtension).ToList();
+              var aextensionData = data.Select(fj => fj.ActiveExtension).ToList();
+              var aflexionData = data.Select(fj => fj.ActiveFlexion).ToList();
+              var pflexionData = data.Select(fj => fj.PassiveFlexion).ToList();
+              var fingerDataWithDates = data.Select(fj => fj.Date.ToString("yyyy-MM-dd")).ToList();
+
+              return Json(new { pextensionData, aextensionData, aflexionData, pflexionData, fingerDataWithDates });
+          }*/
         [HttpGet]
-        public IActionResult GetDataForSelectedNameJson(string nameFilter, string fingerFilter)
+        public IActionResult GetDataForSelectedNameJson(string nameFilter, string fingerFilter, bool pExtensionChecked, bool aExtensionChecked, bool pFlexionChecked, bool aFlexionChecked)
         {
             var data = _context.FingerJoints
                 .Where(fj => (string.IsNullOrEmpty(nameFilter) || fj.Name.Contains(nameFilter)) && (string.IsNullOrEmpty(fingerFilter) || fj.Finger == fingerFilter))
                 .OrderBy(fj => fj.Date)
                 .ToList();
 
-            var extensionData = data.Select(fj => fj.PassiveExtension).ToList();
-            var flexionData = data.Select(fj => fj.ActiveFlexion).ToList();
+            List<int> pextensionData = pExtensionChecked ? data.Select(fj => fj.PassiveExtension).ToList() : new List<int>();
+            List<int> aextensionData = aExtensionChecked ? data.Select(fj => fj.ActiveExtension).ToList() : new List<int>();
+            List<int> pflexionData = pFlexionChecked ? data.Select(fj => fj.PassiveFlexion).ToList() : new List<int>();
+            List<int> aflexionData = aFlexionChecked ? data.Select(fj => fj.ActiveFlexion).ToList() : new List<int>();
             var fingerDataWithDates = data.Select(fj => fj.Date.ToString("yyyy-MM-dd")).ToList();
 
-            return Json(new { extensionData, flexionData, fingerDataWithDates });
+            return Json(new { pextensionData, aextensionData, aflexionData, pflexionData, fingerDataWithDates });
         }
+
         [HttpGet]
         public async Task<IActionResult> Delete(int fid)
         {

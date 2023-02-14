@@ -18,9 +18,29 @@
             }
         </select>
     </div>
-    <button type="button" class="btn btn-primary" onclick="filterData()">Filter</button>
-</form>
 
+    <div class="form-group">
+        <label>Parameters</label>
+        <div>
+            <input type="checkbox" id="pExtCheckbox" name="pExtCheckbox" checked>
+            <label for="pExtCheckbox">Passive Extension</label>
+        </div>
+        <div>
+            <input type="checkbox" id="aExtCheckbox" name="aExtCheckbox" checked>
+            <label for="aExtCheckbox">Active Extension</label>
+        </div>
+        <div>
+            <input type="checkbox" id="pFlexCheckbox" name="pFlexCheckbox" checked>
+            <label for="pFlexCheckbox">Passive Flexion</label>
+        </div>
+        <div>
+            <input type="checkbox" id="aFlexCheckbox" name="aFlexCheckbox" checked>
+            <label for="aFlexCheckbox">Active Flexion</label>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="filterData()">Filter Data</button>
+    </div>
+</form>
+<canvas id="myChart"></canvas>
 <table class="table">
     <thead>
         <tr>
@@ -56,42 +76,69 @@
 </table>
 @*<p> <a asp-controller="FingerJoint" asp-action="Create" class="btn btn-success text-dark">Add Entry</a></p>*@
 
-<canvas id="myChart"></canvas>
+@*<canvas id="myChart"></canvas>*@
 
 <script>
     function filterData() {
-        // Get the values from the form inputs
-
+        // Get the values from the form inputs and checkboxes
         var nameFilter = "@ViewData["selectedName"]";
         var fingerFilter = $("#fingerFilter").val();
+        var pExtChecked = $("#pExtCheckbox").is(":checked");
+        var aExtChecked = $("#aExtCheckbox").is(":checked");
+        var pFlexChecked = $("#pFlexCheckbox").is(":checked");
+        var aFlexChecked = $("#aFlexCheckbox").is(":checked");
 
-        $.getJSON("/FingerJoint/GetDataForSelectedNameJson", { nameFilter: nameFilter, fingerFilter: fingerFilter }, function (data) {
+        $.getJSON("/FingerJoint/GetDataForSelectedNameJson", { nameFilter: nameFilter, fingerFilter: fingerFilter, pExtensionChecked: pExtChecked, aExtensionChecked: aExtChecked, pFlexionChecked: pFlexChecked, aFlexionChecked: aFlexChecked }, function (data) {
             console.log("data:", data);
-            var extensionData = data.extensionData;
-            var flexionData = data.flexionData;
+            console.log("pExtChecked: ", pExtChecked);
+            var chartData = [];
             var fingerDataWithDates = data.fingerDataWithDates;
-            console.log("extensionData:", extensionData);
-            console.log("flexionData:", flexionData);
-            console.log("fingerDataWithDates:", fingerDataWithDates);
+
+            if (pExtChecked) {
+                chartData.push({
+                    label: "Passive Extension",
+                    data: data.pextensionData,
+                    backgroundColor: "rgba(255, 99, 132, 0.2)",
+                    borderColor: "rgba(255, 99, 132, 1)",
+                    borderWidth: 1
+                });
+            }
+            if (aExtChecked) {
+                chartData.push({
+                    label: "Active Extension",
+                    data: data.aextensionData,
+                    backgroundColor: "rgba(255, 206, 86, 0.2)",
+                    borderColor: "rgba(255, 206, 86, 1)",
+                    borderWidth: 1
+                });
+            }
+            if (pFlexChecked) {
+                chartData.push({
+                    label: "Passive Flexion",
+                    data: data.pflexionData,
+                    backgroundColor: "rgba(75, 192, 192, 0.2)",
+                    borderColor: "rgba(75, 192, 192, 1)",
+                    borderWidth: 1
+                });
+            }
+            if (aFlexChecked) {
+                chartData.push({
+                    label: "Active Flexion",
+                    data: data.aflexionData,
+                    backgroundColor: "rgba(54, 162, 235, 0.2)",
+                    borderColor: "rgba(54, 162, 235, 1)",
+                    borderWidth: 1
+                });
+            }
+
+            console.log("chartData:", chartData);
+
             var ctx = document.getElementById("myChart").getContext("2d");
             var myChart = new Chart(ctx, {
                 type: "line",
                 data: {
                     labels: fingerDataWithDates,
-                    datasets: [{
-                        label: "Passive Extension",
-                        data: extensionData,
-                        backgroundColor: "rgba(255, 99, 132, 0.2)",
-                        borderColor: "rgba(255, 99, 132, 1)",
-                        borderWidth: 1
-                    },
-                    {
-                        label: "Active Flexion",
-                        data: flexionData,
-                        backgroundColor: "rgba(54, 162, 235, 0.2)",
-                        borderColor: "rgba(54, 162, 235, 1)",
-                        borderWidth: 1
-                    }]
+                    datasets: chartData
                 },
                 options: {
                     scales: {
