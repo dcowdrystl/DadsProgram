@@ -2,7 +2,9 @@
 
 <head>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <title>@ViewData["selectedName"]</title>
 </head>
 <h2 style="text-align: center;">@ViewData["selectedName"]</h2>
@@ -92,7 +94,10 @@
             console.log("data:", data);
             console.log("pExtChecked: ", pExtChecked);
             var chartData = [];
-            var fingerDataWithDates = data.fingerDataWithDates;
+
+            var fingerDataWithDates = data.fingerDataWithDates.map(function (dateStr) {
+                return new Date(dateStr);
+            });
 
             if (pExtChecked) {
                 chartData.push({
@@ -142,8 +147,23 @@
                 },
                 options: {
                     scales: {
+                        xAxes: [{
+                            type: 'time',
+                            time: {
+                                displayFormats: {
+                                    'day': 'MMM dd',
+                                    'month': 'MMM yyyy'
+                                },
+                                unit: 'month',
+                                tooltipFormat: 'LL'
+                            },
+                            ticks: {
+                                maxTicksLimit: 10
+                            }
+                        }],
                         yAxes: [{
                             ticks: {
+                                stepSize: 10,
                                 beginAtZero: true
                             }
                         }]
