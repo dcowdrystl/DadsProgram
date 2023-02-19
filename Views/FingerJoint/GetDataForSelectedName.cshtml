@@ -96,7 +96,9 @@
             var chartData = [];
 
             var fingerDataWithDates = data.fingerDataWithDates.map(function (dateStr) {
-                return new Date(dateStr);
+                var date = new Date(dateStr);
+                date.setMinutes(date.getMinutes() + date.getTimezoneOffset()); // set time zone offset to zero
+                return date;
             });
 
             if (pExtChecked) {
@@ -151,11 +153,10 @@
                             type: 'time',
                             time: {
                                 displayFormats: {
-                                    'day': 'MMM dd',
-                                    'month': 'MMM yyyy'
+                                    'day': 'MMM dd yyyy'
                                 },
-                                unit: 'month',
-                                tooltipFormat: 'LL'
+                                unit: 'day',
+                                tooltipFormat: 'MMM dd yyyy'
                             },
                             ticks: {
                                 maxTicksLimit: 10
