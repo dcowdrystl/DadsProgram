@@ -1,0 +1,57 @@
+﻿@model FingerJoint
+
+<h1>@ViewBag.name</h1>
+
+<form method="post" action="/fingerjoint/edit">
+    <div asp-validation-summary="All"></div>
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" value="@ViewBag.fingerJointToEdit.Name" class="form-control" required />
+        <span asp-validation-for="Name" class="text-danger"></span>
+        @*<div class="invalid-feedback">Please enter a name.</div>*@
+    </div>
+    <div class="form-group">
+        <label asp-for="Date"></label>
+        <input asp-for="Date" value="@ViewBag.fingerJointToEdit.Date" type="date" class="form-control" />
+        <span asp-validation-for="Date"></span>
+    </div>
+    <div class="form-group">
+        <label for="Finger">Finger</label>
+        <select class="form-control" id="Finger" name="Finger" required>
+            <option value="" selected>Choose...</option>
+            <option value="Thumb">Thumb</option>
+            <option value="Index">Index</option>
+            <option value="Middle">Middle</option>
+            <option value="Ring">Ring</option>
+            <option value="Pinkie">Pinkie</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label asp-for="ActiveExtension"></label>
+        <input asp-for="ActiveExtension" value="@ViewBag.fingerJointToEdit.ActiveExtension" class="form-control" />
+        <span asp-validation-for="ActiveExtension"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PassiveExtension"></label>
+        <input asp-for="PassiveExtension" value="@ViewBag.fingerJointToEdit.PassiveExtension" class="form-control" />
+        <span asp-validation-for="PassiveExtension"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ActiveFlexion"></label>
+        <input asp-for="ActiveFlexion" value="@ViewBag.fingerJointToEdit.ActiveFlexion" class="form-control" />
+        <span asp-validation-for="ActiveFlexion"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PassiveFlexion"></label>
+        <input asp-for="PassiveFlexion" value="@ViewBag.fingerJointToEdit.PassiveFlexion" class="form-control" />
+        <span asp-validation-for="PassiveFlexion"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <input asp-for="Description" value="@ViewBag.fingerJointToEdit.Description" class="form-control" />
+        <span asp-validation-for="Description"></span>
+    </div>
+
+    <input type="hidden" value="@ViewBag.fingerJointToEdit.ID" name="eid">
+    <input type="submit" class="btn btn-outline-primary" value="Submit" />
+</form>

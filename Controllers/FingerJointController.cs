@@ -157,6 +157,35 @@ namespace DadsProgram.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        /*[HttpGet]
+        [Route("FingerJoint/Edit/{eid}")]
+        public IActionResult Edit(int eid)
+        {
 
+            FingerJoint editingFingerJoint = _context.FingerJoints.Find(eid);
+
+            ViewBag.fingerJointToEdit = editingFingerJoint;
+            ViewBag.name = "Edit : " + editingFingerJoint.Name + " on" + editingFingerJoint.Date;
+            return View();
+        }
+
+        [HttpPost]
+        [Route("FingerJoint/Edit")]
+        public IActionResult SubmitEdit(int eid, string name, int activeextension, int passiveextension, int activeflexion, int passiveflexion, string finger, DateTime date, string description)
+        {
+            FingerJoint editingFingerJoint = _context.FingerJoints.Find(eid);
+            editingFingerJoint.Name = name;
+            editingFingerJoint.ActiveExtension = activeextension;
+            editingFingerJoint.PassiveExtension = passiveextension;
+            editingFingerJoint.ActiveFlexion = activeflexion;
+            editingFingerJoint.PassiveFlexion = passiveflexion;
+            editingFingerJoint.Finger = finger;
+            editingFingerJoint.Date = date;
+            editingFingerJoint.Description = description;
+
+            _context.SaveChanges();
+            return View();
+
+        }*/
     }
 }
