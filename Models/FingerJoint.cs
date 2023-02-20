@@ -16,6 +16,7 @@ namespace DadsProgram.Models
         public int PassiveFlexion { get; set; }
 
         public string Finger { get; set; }
+
         public DateTime Date { get; set; }
         public FingerJoint()
         {
