@@ -77,11 +77,10 @@
         }
     </tbody>
 </table>
-@*<p> <a asp-controller="FingerJoint" asp-action="Create" class="btn btn-success text-dark">Add Entry</a></p>*@
-
-@*<canvas id="myChart"></canvas>*@
 
 <script>
+    var myChart;
+
     function filterData() {
         // Get the values from the form inputs and checkboxes
         var nameFilter = "@ViewData["selectedName"]";
@@ -94,6 +93,12 @@
         $.getJSON("/FingerJoint/GetDataForSelectedNameJson", { nameFilter: nameFilter, fingerFilter: fingerFilter, pExtensionChecked: pExtChecked, aExtensionChecked: aExtChecked, pFlexionChecked: pFlexChecked, aFlexionChecked: aFlexChecked }, function (data) {
             console.log("data:", data);
             console.log("pExtChecked: ", pExtChecked);
+
+            // Destroy the old chart object before creating the new one
+            if (myChart) {
+                myChart.destroy();
+            }
+
             var chartData = [];
 
             var fingerDataWithDates = data.fingerDataWithDates.map(function (dateStr) {
@@ -124,8 +129,8 @@
                 chartData.push({
                     label: "Passive Flexion",
                     data: data.pflexionData,
-                    backgroundColor: "rgba(75, 192, 192, 0.2)",
-                    borderColor: "rgba(75, 192, 192, 1)",
+                    backgroundColor: "rgba(54, 162, 235, 0.2)",
+                    borderColor: "rgba(54, 162, 235, 1)",
                     borderWidth: 1
                 });
             }
@@ -133,16 +138,14 @@
                 chartData.push({
                     label: "Active Flexion",
                     data: data.aflexionData,
-                    backgroundColor: "rgba(54, 162, 235, 0.2)",
-                    borderColor: "rgba(54, 162, 235, 1)",
+                    backgroundColor: "rgba(75, 192, 192, 0.2)",
+                    borderColor: "rgba(75, 192, 192, 1)",
                     borderWidth: 1
                 });
             }
 
-            console.log("chartData:", chartData);
-
             var ctx = document.getElementById("myChart").getContext("2d");
-            var myChart = new Chart(ctx, {
+            myChart = new Chart(ctx, {
                 type: "line",
                 data: {
                     labels: fingerDataWithDates,
@@ -151,12 +154,12 @@
                 options: {
                     scales: {
                         xAxes: [{
-                            type: 'time',
+                            type: "time",
                             time: {
-                                displayFormats: {
+                                 displayFormats: {
                                     'day': 'MMM dd yyyy'
                                 },
-                                unit: 'day',
+                                unit: "day",
                                 tooltipFormat: 'MMM dd yyyy'
                             },
                             ticks: {
