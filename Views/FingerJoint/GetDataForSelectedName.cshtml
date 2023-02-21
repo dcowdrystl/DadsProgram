@@ -2,7 +2,9 @@
 
 <head>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <title>@ViewData["selectedName"]</title>
 </head>
 <h2 style="text-align: center;">@ViewData["selectedName"]</h2>
@@ -70,15 +72,15 @@
 
                 <td>@item.Description</td>
                 <td><a asp-controller="FingerJoint" asp-action="Delete" asp-route-fid="@item.ID" class="btn btn-info text-dark"><b>Delete</b></a></td>
+                @*<td><a asp-controller="FingerJoint" asp-action="Edit" asp-route-eid="@item.ID" class="btn btn-info text-dark"><b>Edit</b></a></td>*@
             </tr>
         }
     </tbody>
 </table>
-@*<p> <a asp-controller="FingerJoint" asp-action="Create" class="btn btn-success text-dark">Add Entry</a></p>*@
-
-@*<canvas id="myChart"></canvas>*@
 
 <script>
+    var myChart;
+
     function filterData() {
         // Get the values from the form inputs and checkboxes
         var nameFilter = "@ViewData["selectedName"]";
@@ -91,8 +93,19 @@
         $.getJSON("/FingerJoint/GetDataForSelectedNameJson", { nameFilter: nameFilter, fingerFilter: fingerFilter, pExtensionChecked: pExtChecked, aExtensionChecked: aExtChecked, pFlexionChecked: pFlexChecked, aFlexionChecked: aFlexChecked }, function (data) {
             console.log("data:", data);
             console.log("pExtChecked: ", pExtChecked);
+
+            // Destroy the old chart object before creating the new one
+            if (myChart) {
+                myChart.destroy();
+            }
+
             var chartData = [];
-            var fingerDataWithDates = data.fingerDataWithDates;
+
+            var fingerDataWithDates = data.fingerDataWithDates.map(function (dateStr) {
+                var date = new Date(dateStr);
+                date.setMinutes(date.getMinutes() + date.getTimezoneOffset()); // set time zone offset to zero
+                return date;
+            });
 
             if (pExtChecked) {
                 chartData.push({
@@ -116,8 +129,8 @@
                 chartData.push({
                     label: "Passive Flexion",
                     data: data.pflexionData,
-                    backgroundColor: "rgba(75, 192, 192, 0.2)",
-                    borderColor: "rgba(75, 192, 192, 1)",
+                    backgroundColor: "rgba(54, 162, 235, 0.2)",
+                    borderColor: "rgba(54, 162, 235, 1)",
                     borderWidth: 1
                 });
             }
@@ -125,16 +138,14 @@
                 chartData.push({
                     label: "Active Flexion",
                     data: data.aflexionData,
-                    backgroundColor: "rgba(54, 162, 235, 0.2)",
-                    borderColor: "rgba(54, 162, 235, 1)",
+                    backgroundColor: "rgba(75, 192, 192, 0.2)",
+                    borderColor: "rgba(75, 192, 192, 1)",
                     borderWidth: 1
                 });
             }
 
-            console.log("chartData:", chartData);
-
             var ctx = document.getElementById("myChart").getContext("2d");
-            var myChart = new Chart(ctx, {
+            myChart = new Chart(ctx, {
                 type: "line",
                 data: {
                     labels: fingerDataWithDates,
@@ -142,8 +153,22 @@
                 },
                 options: {
                     scales: {
+                        xAxes: [{
+                            type: "time",
+                            time: {
+                                 displayFormats: {
+                                    'day': 'MMM dd yyyy'
+                                },
+                                unit: "day",
+                                tooltipFormat: 'MMM dd yyyy'
+                            },
+                            ticks: {
+                                maxTicksLimit: 10
+                            }
+                        }],
                         yAxes: [{
                             ticks: {
+                                stepSize: 10,
                                 beginAtZero: true
                             }
                         }]
